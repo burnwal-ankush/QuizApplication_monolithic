@@ -1,12 +1,13 @@
 package com.ankush.quizapp.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-@Entity(name="question")
+@NamedQuery(name = "Question.findRandomQuestionsByCategory", query = "select q from Question q where q.category = :category order by random() limit :numQ")
+@Entity
+@DynamicInsert
+@DynamicUpdate
 public class Question {
 	
 	@Id
@@ -37,6 +38,21 @@ public class Question {
 	
 	@Column(name="right_answer")
 	private String rightAnswer;
+
+	public Question() {
+	}
+
+	public Question(Integer quizId, String category, String difficultyLevel, String option1, String option2, String option3, String option4, String questionTitle, String rightAnswer) {
+		this.quizId = quizId;
+		this.category = category;
+		this.difficultyLevel = difficultyLevel;
+		this.option1 = option1;
+		this.option2 = option2;
+		this.option3 = option3;
+		this.option4 = option4;
+		this.questionTitle = questionTitle;
+		this.rightAnswer = rightAnswer;
+	}
 
 	public Integer getQuizId() {
 		return quizId;
@@ -109,14 +125,4 @@ public class Question {
 	public void setRightAnswer(String rightAnswer) {
 		this.rightAnswer = rightAnswer;
 	}
-
-	@Override
-	public String toString() {
-		return "Question [quizId=" + quizId + ", category=" + category + ", difficultyLevel=" + difficultyLevel
-				+ ", option1=" + option1 + ", option2=" + option2 + ", option3=" + option3 + ", option4=" + option4
-				+ ", questionTitle=" + questionTitle + ", rightAnswer=" + rightAnswer + "]";
-	}
-	
-	
-	
 }

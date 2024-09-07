@@ -11,16 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ankush.quizapp.service.QuizService;
 
 @RestController
-@RequestMapping("quiz")
+@RequestMapping("/quiz")
 public class QuizController 
 {
 	@Autowired
 	QuizService quizService;
 	
-	@PostMapping("create")
+	@PostMapping("/createQuiz")
 	ResponseEntity<String> createQuiz( @RequestParam String category, @RequestParam int numQ, @RequestParam String title ) //to request url parameters
 	{
-		//return new ResponseEntity<>(" I am here", HttpStatus.OK ); //to return response , we have to create a new object of response entity
-		return quizService.createQuiz( category, numQ, title);
+		try {
+			return quizService.createQuiz(category, numQ, title);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
+
+
 }
